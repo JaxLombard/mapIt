@@ -12,7 +12,6 @@ def init():
     global driver
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.implicitly_wait(5)
-    driver.get('https://www.unitedstateszipcodes.org/')
 
 init()
 
@@ -29,29 +28,26 @@ mapIt()
 
 def searchZip():
     global zipCode
+    driver.get('https://www.unitedstateszipcodes.org/')
     search_box = driver.find_element_by_css_selector('#q')
     search_box.send_keys(address)
     driver.find_element_by_css_selector('#search-forms > div.col-xs-12.col-lg-7 > div > span.input-group-btn > button > i').click()
     for char in driver.find_elements_by_xpath('//*[@id="map-info"]/table/tbody/tr[4]/td'):
         zipCode = ((char.text)[:5])
     print("The zipcode is " + zipCode)
-    driver.implicitly_wait(5)
+    global climate
+    driver.get('https://weatherstreet.com/weather-forecast/weather_lookup.htm')
+    search_box = driver.find_element_by_css_selector('body > table:nth-child(5) > tbody > tr:nth-child(3) > td > form > input[type=text]:nth-child(1)')
+    search_box.send_keys(zipCode)
+    driver.find_element_by_css_selector('body > table:nth-child(5) > tbody > tr:nth-child(3) > td > form > input[type=submit]:nth-child(2)').click()
+    for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
+        climate = (str(char.text))
+        print("The climate is " + climate)
     driver.quit()
+   
 
 searchZip()
 
 
-webbrowser.open('https://www.google.com/maps/place/' + address + zipCode)
+webbrowser.open('https://www.google.com/maps/place/' + address + ' ' + zipCode)
 
-def climateSearch():
-    global climate
-    search_box = driver.find_element_by_css_selector('#inputstring')
-    search_box.send_keys(zipCode)
-    driver.find_element_by_css_selector('#btnSearch').click()
-    for char in driver.find_element_by_xpath('//*[@id="current_conditions-summary"]/p[2]'):
-        climate = (char.text)
-        print("The climate is " + climate)
-    driver.implicitly_wait(5)
-    driver.quit()
-
-climateSearch()
