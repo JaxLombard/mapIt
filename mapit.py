@@ -5,15 +5,22 @@ from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
+from selenium.webdriver.common.keys import Keys
 
 #import modules
 
 def init():
     global driver
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.implicitly_wait(5)
+    global options
+    options = webdriver.ChromeOptions()
+    options.add_argument('--ignore-certificate-errors-spki-list')
+    options.add_argument('--ignore-ssl-errors')
+    #driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(chrome_options=options)
+    
 
 init()
+
 
 def mapIt():
     global address
@@ -26,7 +33,8 @@ def mapIt():
 
 mapIt()
 
-def searchZip():
+def searchData():
+    #search google for a zipcode of the address
     global zipCode
     driver.get('https://www.unitedstateszipcodes.org/')
     search_box = driver.find_element_by_css_selector('#q')
@@ -35,6 +43,8 @@ def searchZip():
     for char in driver.find_elements_by_xpath('//*[@id="map-info"]/table/tbody/tr[4]/td'):
         zipCode = ((char.text)[:5])
     print("The zipcode is " + zipCode)
+
+    #search google for climate of the zipcode
     global climate
     driver.get('https://weatherstreet.com/weather-forecast/weather_lookup.htm')
     search_box = driver.find_element_by_css_selector('body > table:nth-child(5) > tbody > tr:nth-child(3) > td > form > input[type=text]:nth-child(1)')
@@ -43,11 +53,12 @@ def searchZip():
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
-    driver.quit()
-   
+        
+    #search google for nearby schools of address
+    
+        
 
-searchZip()
-
+searchData()
 
 webbrowser.open('https://www.google.com/maps/place/' + address + ' ' + zipCode)
 
