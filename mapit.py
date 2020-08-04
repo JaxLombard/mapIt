@@ -54,14 +54,6 @@ def searchData():
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
-    #grab an embeded map of the address
-    driver.get('https://www.maps.ie/create-google-map/')
-    search_box = driver.find_element_by_css_selector('#address')
-    search_box.send_keys(address + Keys.RETURN)
-    for char in driver.find_element_by_css_selector('#code > textarea'):
-        global iframe
-        iframe = (str(char.text))
-        
 
         
 
