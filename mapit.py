@@ -54,9 +54,7 @@ def searchData():
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
-    driver.quit()
-    #search google for nearby schools of address
-    
+
         
 
 searchData()
@@ -68,7 +66,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html", zipCode=zipCode, climate=climate)
+    return render_template("index.html", zipCode=zipCode, climate=climate, iframe=iframe)
 
 if __name__ == "__main__":
     app.run()
