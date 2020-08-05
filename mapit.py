@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
 from selenium.webdriver.common.keys import Keys
 from flask import Flask, render_template
+from settings import API_KEY
 
 #import modules
 
@@ -54,12 +55,13 @@ def searchData():
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
+    driver.quit()
+
 
         
 
 searchData()
 
-webbrowser.open('https://www.google.com/maps/place/' + address + ' ' + zipCode)
 
 
 app = Flask(__name__)
@@ -69,4 +71,4 @@ def home():
     return render_template("index.html", zipCode=zipCode, climate=climate, iframe=iframe)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
