@@ -7,11 +7,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
 from selenium.webdriver.common.keys import Keys
 from flask import Flask, render_template
+from smartystreets_python_sdk import StaticCredentials, exceptions, ClientBuilder
+from smartystreets_python_sdk.us_street import Lookup as StreetLookup
 import time
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-
+address = (input("What is your desired address?"))
 #import modules
 def init():
     global driver
@@ -21,6 +23,7 @@ def init():
     options.add_argument('--ignore-ssl-errors')
     #driver = webdriver.Chrome(ChromeDriverManager().install())
     driver = webdriver.Chrome(chrome_options=options)
+    
     
 
 init()
@@ -33,16 +36,8 @@ def dotenv():
 
 dotenv()
 
-def mapIt():
-    global address
-    if len(sys.argv) > 1:
-        #grab address from cmd line
-        address = ' '.join(sys.argv[1:])
-    else:
-        #get address from clipboard
-        address = pyperclip.paste()
 
-mapIt()
+
 
 def searchData():
     #search google for a zipcode of the address
@@ -71,14 +66,40 @@ def searchData():
 
 searchData()
 
+def smarty():
+    global auth_id
+    global auth_token
+    global timezone
+    auth_id = os.getenv("auth_id")
+    auth_token = os.getenv("auth_token")
+    credentials = StaticCredentials(auth_id, auth_token)
+    client = ClientBuilder(credentials).build_us_street_api_client()
+    lookup = StreetLookup()
+    lookup.street(address)
+    lookup.zipcode(zipCode)
+    lookup.candidates(3)
+    try:
+        client.send_lookup(lookup)
+    except exceptions.SmartyException as err:
+        print(err)
+        return
 
+    result = lookup.result
 
+    if not result:
+        print("No candidates. This means the address is not valid.")
+        return
+
+    first_candidate = result[0]
+
+    timezone = (first_canidate.metadata.time_zone) 
+    print(timezone)   
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html", zipCode=zipCode, climate=climate)
+    return render_template("index.html", zipCode=zipCode, climate=climate, timezone=timezone)
 
 if __name__ == "__main__":
     app.run()
