@@ -1,28 +1,54 @@
 
         
         .start{
-            color: #8C78E2;
+           
             text-align: center;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             }
 
                 .address_Text{
-                    color: #A99AEA;
-                    border-style: dashed;
-                    border-width: 3px;
+                    color: white;
+                    text-align: center;
+                    border-top-style: dashed;
+                    border-top-width: 3px;
                     border-color: black;
                     
                     }
                     
                     .search_Bar
                     {
-                        color: grey;
+                        text-align: center;
+                        color: #CCCCCC;
+                    }
+                    .card
+                    {
+                        
+                        border-width: 10px;
+                        border-radius: 25px;
+                    }
+                    .button
+                    {
+                        background-color: #5975a6;
+                        border-width: 10px;
+                        border-radius: 25px;
+                        text-align: center;
+                        height: 300;
+                        float: right;
+                        width: 300;
+                        color: white;
+                        
+                    }
+                    .infoBel{
+                        color: white;
+                        text-align: center;
                     }
 
         body{
             text-align: center;
-            background-Image: linear-gradient(purple, #152C7A);
+            background-Image: linear-gradient(#333333, #474747);
             }
+
+   
 
 
         
