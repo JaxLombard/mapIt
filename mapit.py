@@ -1,5 +1,5 @@
 #! python3
-#mapit.py launches a google map in the browser using an address from the command line or clipboard
+# mapit.py
 import googlemaps
 from datetime import datetime
 from selenium import webdriver
@@ -7,10 +7,12 @@ from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
 from selenium.webdriver.common.keys import Keys
 from flask import Flask, render_template
-from settings import API_KEY
+import time
+from dotenv import load_dotenv
+from pathlib import Path
+import os
 
 #import modules
-
 def init():
     global driver
     global options
@@ -23,6 +25,13 @@ def init():
 
 init()
 
+def dotenv():
+    global api_key
+    path = (r'C:\Users\Jax Lombard\Desktop\Code\Python\Web\MapIt\keys.env')
+    load_dotenv(dotenv_path=path, verbose=True)
+    api_key = os.getenv('api_key')
+
+dotenv()
 
 def mapIt():
     global address
@@ -55,7 +64,7 @@ def searchData():
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
-    driver.quit()
+        driver.quit()
 
 
         
@@ -64,11 +73,12 @@ searchData()
 
 
 
+
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html", zipCode=zipCode, climate=climate, iframe=iframe)
+    return render_template("index.html", zipCode=zipCode, climate=climate)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
