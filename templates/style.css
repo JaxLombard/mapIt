@@ -7,17 +7,21 @@
             }
 
                 .address_Text{
-                    color: #9000B3;
+                    color: #A99AEA;
                     border-style: dashed;
                     border-width: 3px;
                     border-color: black;
                     
                     }
                     
+                    .search_Bar
+                    {
+                        color: grey;
+                    }
 
         body{
             text-align: center;
-            background-color: #2A1976;
+            background-Image: linear-gradient(purple, #152C7A);
             }
 
 
