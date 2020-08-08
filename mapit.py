@@ -7,8 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
 from selenium.webdriver.common.keys import Keys
 from flask import Flask, render_template
-from smartystreets_python_sdk import StaticCredentials, exceptions, ClientBuilder
-from smartystreets_python_sdk.us_street import Lookup as StreetLookup
+import smartystreets_python_sdk as smarty
 import time
 from dotenv import load_dotenv
 from pathlib import Path
@@ -21,8 +20,8 @@ def init():
     options = webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors-spki-list')
     options.add_argument('--ignore-ssl-errors')
-    #driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver = webdriver.Chrome(chrome_options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    #driver = webdriver.Chrome(chrome_options=options)
     
     
 
@@ -74,26 +73,17 @@ def smarty():
     auth_token = os.getenv("auth_token")
     credentials = StaticCredentials(auth_id, auth_token)
     client = ClientBuilder(credentials).build_us_street_api_client()
-    lookup = StreetLookup()
-    lookup.street(address)
-    lookup.zipcode(zipCode)
-    lookup.candidates(3)
-    try:
-        client.send_lookup(lookup)
-    except exceptions.SmartyException as err:
-        print(err)
-        return
+    lookup = us_street.Lookup(address)
+    client.send_lookup(lookup)
+    first_candidate = lookup.result[0]
 
     result = lookup.result
 
-    if not result:
-        print("No candidates. This means the address is not valid.")
-        return
-
-    first_candidate = result[0]
 
     timezone = (first_canidate.metadata.time_zone) 
     print(timezone)   
+
+smarty()
 
 app = Flask(__name__)
 
