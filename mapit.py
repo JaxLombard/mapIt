@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import webbrowser, sys, pyperclip
 from selenium.webdriver.common.keys import Keys
 from flask import Flask, render_template
-import smartystreets_python_sdk as smarty
+from flask import url_for
 import time
 from dotenv import load_dotenv
 from pathlib import Path
@@ -45,6 +45,7 @@ def searchData():
     search_box = driver.find_element_by_css_selector('#q')
     search_box.send_keys(address)
     driver.find_element_by_css_selector('#search-forms > div.col-xs-12.col-lg-7 > div > span.input-group-btn > button > i').click()
+    time.sleep(2)
     for char in driver.find_elements_by_xpath('//*[@id="map-info"]/table/tbody/tr[4]/td'):
         zipCode = ((char.text)[:5])
     print("The zipcode is " + zipCode)
@@ -55,6 +56,7 @@ def searchData():
     search_box = driver.find_element_by_css_selector('body > table:nth-child(5) > tbody > tr:nth-child(3) > td > form > input[type=text]:nth-child(1)')
     search_box.send_keys(zipCode)
     driver.find_element_by_css_selector('body > table:nth-child(5) > tbody > tr:nth-child(3) > td > form > input[type=submit]:nth-child(2)').click()
+    time.sleep(2)
     for char in driver.find_elements_by_xpath('/html/body/table/tbody/tr/td/table[6]/tbody/tr/td[1]/table[1]/tbody/tr[4]/td/font[2]'):
         climate = (str(char.text))
         print("The climate is " + climate)
@@ -65,31 +67,11 @@ def searchData():
 
 searchData()
 
-def smarty():
-    global auth_id
-    global auth_token
-    global timezone
-    auth_id = os.getenv("auth_id")
-    auth_token = os.getenv("auth_token")
-    credentials = StaticCredentials(auth_id, auth_token)
-    client = ClientBuilder(credentials).build_us_street_api_client()
-    lookup = us_street.Lookup(address)
-    client.send_lookup(lookup)
-    first_candidate = lookup.result[0]
-
-    result = lookup.result
-
-
-    timezone = (first_canidate.metadata.time_zone) 
-    print(timezone)   
-
-smarty()
-
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html", zipCode=zipCode, climate=climate, timezone=timezone)
+    return render_template("index.html", zipCode=zipCode, climate=climate)
 
 if __name__ == "__main__":
     app.run()
