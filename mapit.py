@@ -1,6 +1,5 @@
 #! python3
 # mapit.py
-import googlemaps
 from datetime import datetime
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
