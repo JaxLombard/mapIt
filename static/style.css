@@ -1,0 +1,67 @@
+        .start {
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        
+        .address_Text {
+            color: white;
+            text-align: center;
+            border-top-style: dashed;
+            border-top-width: 3px;
+            border-color: black;
+        }
+        
+        .search_Bar {
+            text-align: center;
+            color: #CCCCCC;
+        }
+        
+        .card {
+            border-width: 10px;
+            border-radius: 25px;
+        }
+        
+        .abtUs {
+            background-color: #5975a6;
+            border-width: 10px;
+            border-radius: 25px;
+            text-align: center;
+            height: 300px;
+            float: right;
+            width: 300px;
+            color: white;
+        }
+        
+        .infoBel {
+            color: white;
+            text-align: center;
+        }
+        
+        .boxOne {
+            background-image: linear-gradient(#8b619e, #3c3b40);
+            width: 300px;
+            height: 300px;
+            border-width: 10px;
+            border-radius: 25px;
+        }
+        
+        .boxTwo {
+            background-image: linear-gradient(#8b619e, #3c3b40);
+            width: 300px;
+            height: 300px;
+            border-width: 10px;
+            border-radius: 25px;
+        }
+        
+        .boxThree {
+            background-image: linear-gradient(#8b619e, #3c3b40);
+            width: 300px;
+            height: 300px;
+            border-width: 10px;
+            border-radius: 25px;
+        }
+        
+        body {
+            text-align: center;
+            background-Image: linear-gradient(#333333, #474747);
+        }
